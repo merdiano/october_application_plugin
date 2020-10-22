@@ -3,7 +3,7 @@
 use BackendMenu;
 use Backend\Classes\Controller;
 use TPS\Card\Models\Application;
-
+use \TPS\Card\Classes\Payment;
 /**
  * Applications Back-end Controller
  */
@@ -37,7 +37,7 @@ class Applications extends Controller
     public function checkPayment($app_id){
 
         if(get(is_payment_successful)){
-            $responce = \Payment::getStatus($app_id);
+            $responce = Payment::getStatus($app_id);
             //todo if payment ok show successful page, send email
         }
         else{

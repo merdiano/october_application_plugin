@@ -1,6 +1,7 @@
-<?php
+<?php namespace TPS\Card\Classes;
 use October\Rain\Network\Http;
 use TPS\Card\Models\Application as CardApp;
+use TPS\Card\Models\Settings;
 
 class Payment
 {
@@ -11,7 +12,7 @@ class Payment
 
     const API_URL = 'https://mpi.gov.tm/payment/rest/';
 
-    private function getClient($url){
+    private static function getClient($url){
         return Http::make(self::API_URL.$url, Http::METHOD_POST,[
             'Content-Type' => 'application/json'
         ])->data([
@@ -20,8 +21,7 @@ class Payment
                 'password' => Settings::get('bank_api_password'),
                 'language' => 'ru',
             ]
-        ])->verifySSL()
-            ->timeout(3600);
+        ])->timeout(3600);
     }
 
     public static function registerOrder($order_id){

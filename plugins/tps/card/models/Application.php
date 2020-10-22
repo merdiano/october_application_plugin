@@ -22,7 +22,7 @@ class Application extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = [];
+    protected $fillable = ['firstname','lastname','email','address'];
 
     /**
      * @var array Validation rules for attributes

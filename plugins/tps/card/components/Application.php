@@ -1,8 +1,9 @@
 <?php namespace TPS\Card\Components;
 
 use Cms\Classes\ComponentBase;
+use October\Rain\Exception\ValidationException;
 use \TPS\Card\Models\Application as CardApp;
-
+use \TPS\Card\Classes\Payment;
 class Application extends ComponentBase
 {
     public function componentDetails()
@@ -25,7 +26,7 @@ class Application extends ComponentBase
             'firstname',
             'lastname',
             'email',
-            'content'
+            'address'
         ]);
 
         // Validate request
@@ -35,7 +36,9 @@ class Application extends ComponentBase
 
         $application = CardApp::create($data);
 
-        $response = \Payment::registerOrder($application->id);
+        $response = Payment::registerOrder($application->id);
+        $result = json_decode($response->body,true);
+
         //todo check response success, register orderId
 
         $this->sendNotification($application);
