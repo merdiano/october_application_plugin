@@ -1,6 +1,7 @@
 <?php namespace TPS\Card\Components;
 
 use Cms\Classes\ComponentBase;
+use \TPS\Card\Models\Application as CardApp;
 
 class Application extends ComponentBase
 {
@@ -30,13 +31,22 @@ class Application extends ComponentBase
         // Validate request
         $this->validate($data);
 
-        //todo register payment, register application, Send email, redirect to payment,
+        //todo save file
 
+        $application = CardApp::create($data);
 
+        $response = \Payment::registerOrder($application->id);
+        //todo check response success, register orderId
+
+        $this->sendNotification($application);
+
+        //todo  redirect to payment,
 
     }
 
-    private function sendNotification(\TPS\Card\Models\Application $app){
+
+
+    private function sendNotification(CardApp $app){
         //todo send email to admin
 //        $receiver = 'admin@gmail.com';
 //

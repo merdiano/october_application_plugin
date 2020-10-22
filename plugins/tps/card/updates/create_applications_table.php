@@ -26,6 +26,7 @@ class CreateApplicationsTable extends Migration
             $table->string('work')->nullable();
             $table->string('passport_scan')->nullable();
             $table->string('orderId')->nullable();
+//            $table->string('order_reference')->nullable();
             $table->boolean('payed')->default(0);
         });
     }

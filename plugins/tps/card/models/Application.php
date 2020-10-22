@@ -69,4 +69,16 @@ class Application extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    /**
+     * Boot all of the bootable traits on the model.
+     */
+//    public static function boot()
+//    {
+//        parent::boot();
+//
+//        static::creating(function ($application) {
+//            $application->order_reference = strtoupper(str_random(5)) . date('jn');
+//        });
+//    }
 }
