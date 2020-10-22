@@ -34,11 +34,21 @@ class Applications extends Controller
         BackendMenu::setContext('TPS.Card', 'card', 'applications');
     }
 
-    public function checkPayment($app_id){
+    public function checkPayment(){
 
-        if(get(is_payment_successful)){
-            $responce = Payment::getStatus($app_id);
-            //todo if payment ok show successful page, send email
+        $app_id = get('app_id');
+        if(get(is_payment_successful) && $app_id){
+            $responce = json_decode(Payment::getStatus($app_id),true);
+
+            if( $responce['ErrorCode'] == 0
+                && $responce['OrderStatus'] == 2){
+                Application::where('id',$app_id)->update(['payed' => true]);
+                //todo show successful page, send email
+            }
+            else{
+                //
+            }
+
         }
         else{
             //todo show payment cancelled view

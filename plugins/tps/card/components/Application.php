@@ -1,6 +1,7 @@
 <?php namespace TPS\Card\Components;
 
 use Cms\Classes\ComponentBase;
+use October\Rain\Exception\AjaxException;
 use October\Rain\Exception\ValidationException;
 use \TPS\Card\Models\Application as CardApp;
 use \TPS\Card\Classes\Payment;
@@ -37,13 +38,23 @@ class Application extends ComponentBase
         $application = CardApp::create($data);
 
         $response = Payment::registerOrder($application->id);
+
         $result = json_decode($response->body,true);
 
-        //todo check response success, register orderId
+        if($result['errorCode'] == 0){
+            $application->orderId = $result['orderId'];
 
-        $this->sendNotification($application);
+            $application->save();
 
-        //todo  redirect to payment,
+            $this->sendNotification($application);
+
+            return Redirect::to($result['formUrl']);
+        }
+        else{
+            throw new AjaxException(
+                $result
+            );
+        }
 
     }
 
